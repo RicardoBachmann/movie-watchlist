@@ -7,6 +7,20 @@
     <title>Movie Watchlist</title>
   </head>
   <body>
-    <script src="script.js"></script>
+    <header>
+      <h1>Welcome to Movie-Watchlist</h1>
+      <h2>Find your Film</h2>
+      <button>My Watchlist</button>
+    </header>
+    <main id="container">
+      <section id="input-container">
+        <form id="searchForm">
+          <input type="search" placeholder="Search for a movie" required />
+          <button type="submit">Search</button>
+        </form>
+      </section>
+      <section id="movie-container"></section>
+    </main>
+    <script src="script.js" type="module"></script>
   </body>
 </html>
