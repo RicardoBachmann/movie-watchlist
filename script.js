@@ -12,7 +12,7 @@ async function getMovieData() {
             <h1>${data.Title}</h1>
             <p>${data.Plot}</p>
         `;
-    document.getElementById("container").innerHTML = movieHtml;
+    document.getElementById("movie-container").innerHTML = movieHtml;
   } catch (error) {
     alert(error);
   }
