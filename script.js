@@ -22,12 +22,22 @@ async function getMovieData(searchTerm) {
 
         movieHtml += `
             <div class="movie-card">
-                <h1>${detailsData.Title}</h1>
-                <img src="${detailsData.Poster}" alt=""/>
-                <p>${detailsData.imdbRating}</p>
-                <p>${detailsData.Runtime}</p>
-                <p>${detailsData.Genre}</p>
+                <div class="movie-poster">
+                    <img src="${detailsData.Poster}" alt=""/>
+                </div>
+                <div class="movie-card-info">
+                <div class="movie-card-header">
+                    <h1>${detailsData.Title}</h1>
+                    <p>&#11088 ${detailsData.imdbRating}</p>
+                </div>
+                <div class="movie-card-header_sub">
+                    <p>${detailsData.Runtime}</p>
+                    <p>${detailsData.Genre}</p>
+                    <button>Add to Watchlist</button>
+                </div>
                 <p>${detailsData.Plot}</p>
+                </div>
+                <hr>
             </div>
         `;
       }
