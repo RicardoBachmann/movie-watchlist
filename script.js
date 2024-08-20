@@ -45,7 +45,7 @@ async function getMovieData(searchTerm) {
       movieHtml = `<p>No movies found for "${searchTerm}".</p>`;
     }
     document.getElementById("movie-container").innerHTML = movieHtml;
-    // Attach event listeners to the nwéwly created buttons
+    // Attach event listeners to the newly created buttons
     document.querySelectorAll(".add-to-watchlist").forEach((button) => {
       button.addEventListener("click", handleAddToWatchlist);
     });
@@ -57,6 +57,7 @@ async function getMovieData(searchTerm) {
   }
 }
 
+// This function manages the process of adding a movie to the watchlist by first retrieving the movie's details and then invoking the function to add it to local storage
 function handleAddToWatchlist(e) {
   const imdbID = e.target.getAttribute("data-movie-id");
   findMovieById(imdbID).then((movie) => {
@@ -66,6 +67,7 @@ function handleAddToWatchlist(e) {
   });
 }
 
+// Fetches detailed information about a movie using its IMDd ID and returns the movie data if found
 function findMovieById(imdbID) {
   return fetch(`http://www.omdbapi.com/?i=${imdbID}&apikey=ff2c7e65`)
     .then((response) => response.json())
@@ -81,8 +83,10 @@ function findMovieById(imdbID) {
     });
 }
 
+// Adds the movie to watchlist atored in local storage if its not already there and provides feedback to the user
 function addMovietoWatchlist(movie) {
   let watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
+  // Checks if the movie already exists in the watchlist
   if (!watchlist.some((m) => m.imdbID === movie.imdbID)) {
     watchlist.push(movie);
     localStorage.setItem("watchlist", JSON.stringify(watchlist));
