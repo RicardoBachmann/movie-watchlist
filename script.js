@@ -13,13 +13,24 @@ async function getMovieData(searchTerm) {
     let movieHtml = "";
     console.log(data);
     if (data.Response === "True") {
-      // .Search for accessing the API data
-      data.Search.forEach((movie) => {
+      //Loop through the search results
+      for (const movie of data.Search) {
+        const movieDetails = await fetch(
+          `http://www.omdbapi.com/?i=${movie.imdbID}&apikey=ff2c7e65`
+        );
+        const detailsData = await movieDetails.json();
+
         movieHtml += `
-                <h1>${movie.Title}</h1>
-                <img src=${movie.Poster}/>
-            `;
-      });
+            <div class="movie-card">
+                <h1>${detailsData.Title}</h1>
+                <img src="${detailsData.Poster}" alt=""/>
+                <p>${detailsData.imdbRating}</p>
+                <p>${detailsData.Runtime}</p>
+                <p>${detailsData.Genre}</p>
+                <p>${detailsData.Plot}</p>
+            </div>
+        `;
+      }
     } else {
       movieHtml = `<p>No movies found for "${searchTerm}".</p>`;
     }
@@ -34,7 +45,7 @@ async function getMovieData(searchTerm) {
 document.getElementById("search-form").addEventListener("submit", function (e) {
   e.preventDefault();
   //.trim() remove whitespace from both ends of a string
-  const searchTerm = document.getElementById("input-title").value.trim();
+  let searchTerm = document.getElementById("input-title").value.trim();
   if (searchTerm) {
     getMovieData(searchTerm);
   }
