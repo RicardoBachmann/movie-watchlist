@@ -13,13 +13,34 @@ async function getMovieData(searchTerm) {
     let movieHtml = "";
     console.log(data);
     if (data.Response === "True") {
-      // .Search for accessing the API data
-      data.Search.forEach((movie) => {
+      //Loop through the search results
+      for (const movie of data.Search) {
+        const movieDetails = await fetch(
+          `http://www.omdbapi.com/?i=${movie.imdbID}&apikey=ff2c7e65`
+        );
+        const detailsData = await movieDetails.json();
+
         movieHtml += `
-                <h1>${movie.Title}</h1>
-                <img src=${movie.Poster}/>
-            `;
-      });
+            <div class="movie-card">
+                <div class="movie-poster">
+                    <img src="${detailsData.Poster}" alt=""/>
+                </div>
+                <div class="movie-card-info">
+                <div class="movie-card-header">
+                    <h1>${detailsData.Title}</h1>
+                    <p>&#11088 ${detailsData.imdbRating}</p>
+                </div>
+                <div class="movie-card-header_sub">
+                    <p>${detailsData.Runtime}</p>
+                    <p>${detailsData.Genre}</p>
+                    <button>Add to Watchlist</button>
+                </div>
+                <p>${detailsData.Plot}</p>
+                </div>
+                <hr>
+            </div>
+        `;
+      }
     } else {
       movieHtml = `<p>No movies found for "${searchTerm}".</p>`;
     }
@@ -34,7 +55,7 @@ async function getMovieData(searchTerm) {
 document.getElementById("search-form").addEventListener("submit", function (e) {
   e.preventDefault();
   //.trim() remove whitespace from both ends of a string
-  const searchTerm = document.getElementById("input-title").value.trim();
+  let searchTerm = document.getElementById("input-title").value.trim();
   if (searchTerm) {
     getMovieData(searchTerm);
   }
