@@ -82,3 +82,17 @@ body {
 .search-button:hover {
   background-color: #e0e0e0;
 }
+
+.movie-exploring {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 226px);
+  color: #dfdddd;
+}
+
+.movie-exploring p {
+  font-size: 18px;
+  padding: 5px;
+}
