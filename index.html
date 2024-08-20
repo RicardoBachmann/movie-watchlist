@@ -13,22 +13,26 @@
     <title>Movie Watchlist</title>
   </head>
   <body>
-    <header class="movie-header">
+    <header class="header">
       <h1>Find your Film</h1>
       <a href="watchlist.html" id="navigation" class="navigation"
         >My Watchlist</a
       >
     </header>
     <main id="container">
-      <section id="input-container">
+      <section class="input__container" id="input-container">
         <form id="search-form">
-          <input
-            type="search"
-            id="input-title"
-            placeholder="Search for a movie"
-            required
-          />
-          <button type="submit">Search</button>
+          <div class="input-wrapper">
+            <span class="search-icon">🔍</span>
+            <input
+              type="search"
+              id="input-title"
+              placeholder="Search for a movie"
+              class="search-bar"
+              required
+            />
+            <button type="submit" class="search-button">Search</button>
+          </div>
         </form>
       </section>
       <section id="movie-container"></section>
