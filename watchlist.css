@@ -34,3 +34,8 @@ body {
   font-weight: 700;
   padding-right: 1.875rem;
 }
+
+.add-to-watchlist {
+  cursor: pointer;
+  font-size: 30px;
+}
