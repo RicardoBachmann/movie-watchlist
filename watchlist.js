@@ -3,25 +3,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document
     .getElementById("watchlist-container")
-    .addEventListener("click", function (e) {
-      if (
-        e.target &&
-        e.target.tagName === "BUTTON" &&
-        e.target.hasAttribute("data-movie-id")
-      ) {
+    .addEventListener("click", (e) => {
+      // .matches() checks directly if the clicked element matches the selector
+      if (e.target.matches("button[data-movie-id]")) {
         handleDeleteMovie(e);
       }
     });
 });
 
 function displayWatchlist() {
-  let watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
-  let watchlistHtml = "";
-  for (const movie of watchlist) {
-    watchlistHtml += `
+  const watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
+  const watchlistHtml = watchlist
+    // use .map() to provide a more concise approach to transform and generating HTML content from an arr
+    .map(
+      (movie) => `
               <div class="movie-card">
         <div class="movie-poster">
-          <img src="${movie.Poster}" alt=""/>
+          <img src="${movie.Poster}" alt="Poster of the movie ${movie.Title}"/>
         </div>
         <div class="movie-card-info">
           <div class="movie-card-header">
@@ -37,15 +35,17 @@ function displayWatchlist() {
         </div>
         <hr>
       </div>
-        `;
-  }
+        `
+    )
+    .join("");
+
   document.getElementById("watchlist-container").innerHTML = watchlistHtml;
 }
 
 function handleDeleteMovie(e) {
   const imdbID = e.target.getAttribute("data-movie-id");
 
-  let watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
+  const watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
   watchlist = watchlist.filter((movie) => movie.imdbID !== imdbID);
 
   localStorage.setItem("watchlist", JSON.stringify(watchlist));
