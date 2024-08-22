@@ -4,13 +4,15 @@
   padding: 0;
 }
 
+/* Layout */
+
 body {
   font-family: "Inter", sans-serif;
   margin: 0 auto;
 }
 
 .header {
-  height: 208px;
+  height: 180px;
   background-image: url("https://images.unsplash.com/photo-1628432136678-43ff9be34064?q=80&w=2763&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
   background-size: cover;
   background-color: rgba(0, 0, 0, 0.5);
@@ -18,21 +20,52 @@ body {
   background-position: 0% 20%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+}
+
+.movie__container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  border: 1px solid red;
 }
 
 .header h1 {
   color: white;
-  font-size: 2.625rem;
-  padding-left: 1.875rem;
+  font-size: 2.5rem;
+  padding-top: 1rem;
+  margin-bottom: 1rem;
 }
 
-.navigation {
-  color: white;
+.navigation__button {
+  display: inline-block;
+  padding: 10px 25px;
+  background-color: #007bff;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
   text-decoration: none;
-  font-size: 0, 875rem;
-  font-weight: 700;
-  padding-right: 1.875rem;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+.navigation__button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.navigation__button:active {
+  background-color: #004085;
+  transform: scale(0.95);
+}
+
+.navigation__button:focus {
+  outline: 3px solid #80bdff;
+  outline-offset: 2px;
 }
 
 .input__container {
@@ -40,7 +73,8 @@ body {
   justify-content: center;
   align-items: center;
   position: relative;
-  top: -20px;
+  top: -40px;
+  margin: 20px;
 }
 
 .input-wrapper {
@@ -56,7 +90,6 @@ body {
   width: 100%;
   padding: 10px 40px 10px 40px;
   border: none;
-  flex: 1;
   font-size: 1rem;
   outline: none;
 }
@@ -80,7 +113,7 @@ body {
 }
 
 .search-button:hover {
-  background-color: #e0e0e0;
+  background-color: #da1e1e;
 }
 
 .movie-exploring {
@@ -101,6 +134,8 @@ body {
   display: flex;
   align-items: center;
   padding-left: 50px;
+  margin-bottom: 20px;
+  border: 1px solid blue;
 }
 
 .movie-card-info {
