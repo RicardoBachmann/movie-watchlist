@@ -45,7 +45,7 @@ function displayWatchlist() {
 function handleDeleteMovie(e) {
   const imdbID = e.target.getAttribute("data-movie-id");
 
-  const watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
+  let watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
   watchlist = watchlist.filter((movie) => movie.imdbID !== imdbID);
 
   localStorage.setItem("watchlist", JSON.stringify(watchlist));

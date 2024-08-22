@@ -1,29 +1,35 @@
+const API_KEY = "ff2c7e65";
+const API_URL = "http://www.omdbapi.com/";
+
 async function getMovieData(searchTerm) {
   try {
     // using encodeURIComponent to make sure that the search term is correctly formatted for the API request
     const response = await fetch(
-      `http://www.omdbapi.com/?s=${encodeURIComponent(
-        searchTerm
-      )}&apikey=ff2c7e65`
+      `${API_URL}?s=${encodeURIComponent(searchTerm)}&apikey=${API_KEY}`
     );
     if (!response.ok) {
       throw new Error(`HTTP error! status:${response.status}`);
     }
     const data = await response.json();
     let movieHtml = "";
-    console.log(data);
-    if (data.Response === "True") {
-      //Loop through the search results
-      for (const movie of data.Search) {
-        const movieDetails = await fetch(
-          `http://www.omdbapi.com/?i=${movie.imdbID}&apikey=ff2c7e65`
-        );
-        const detailsData = await movieDetails.json();
 
-        movieHtml += `
+    if (data.Response === "True") {
+      // promise.all to fetch details for multiple movies concurrently, improving performance by making parallel requests instead of serially
+      const movies = await Promise.all(
+        data.Search.map(async (movie) => {
+          const detailsResponse = await fetch(
+            `${API_URL}?i=${movie.imdbID}&apikey=${API_KEY}`
+          );
+          return detailsResponse.json();
+        })
+      );
+
+      movieHtml = movies
+        .map(
+          (detailsData) => `
             <div class="movie-card">
                 <div class="movie-poster">
-                    <img src="${detailsData.Poster}" alt=""/>
+                    <img src="${detailsData.Poster}" alt="Poster of the movie ${detailsData.Title}"/>
                 </div>
                 <div class="movie-card-info">
                 <div class="movie-card-header">
@@ -39,14 +45,17 @@ async function getMovieData(searchTerm) {
                 </div>
                 <hr>
             </div>
-        `;
-      }
+        `
+        )
+        .join("");
     } else {
       movieHtml = `<p>No movies found for "${searchTerm}".</p>`;
     }
-    document.getElementById("movie-container").innerHTML = movieHtml;
+
+    const container = document.getElementById("movie-container");
+    container.innerHTML = movieHtml;
     // Attach event listeners to the newly created buttons
-    document.querySelectorAll(".add-to-watchlist").forEach((button) => {
+    container.querySelectorAll(".add-to-watchlist").forEach((button) => {
       button.addEventListener("click", handleAddToWatchlist);
     });
   } catch (error) {
@@ -58,33 +67,31 @@ async function getMovieData(searchTerm) {
 }
 
 // This function manages the process of adding a movie to the watchlist by first retrieving the movie's details and then invoking the function to add it to local storage
-function handleAddToWatchlist(e) {
+async function handleAddToWatchlist(e) {
   const imdbID = e.target.getAttribute("data-movie-id");
-  findMovieById(imdbID).then((movie) => {
-    if (movie) {
-      addMovietoWatchlist(movie);
-    }
-  });
+  // Add error to catch potential issues
+  try {
+    const movie = await findMovieById(imdbID);
+    if (movie) addMovieToWatchlist(movie);
+  } catch (error) {
+    console.error("Error adding movie to watchlist:", error);
+  }
 }
 
 // Fetches detailed information about a movie using its IMDd ID and returns the movie data if found
-function findMovieById(imdbID) {
-  return fetch(`http://www.omdbapi.com/?i=${imdbID}&apikey=ff2c7e65`)
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.Response === "True") {
-        return data;
-      } else {
-        throw new Error(`Movie not found: ${imdbID}`);
-      }
-    })
-    .catch((error) => {
-      console.error("Error finding movie by ID:", error);
-    });
+async function findMovieById(imdbID) {
+  try {
+    const response = await fetch(`${API_URL}?i=${imdbID}&apikey=${API_KEY}`);
+    const data = await response.json();
+    if (data.Response === "True") return data;
+    throw new Error(`Movie not found: ${imdbID}`);
+  } catch (error) {
+    console.error("Error finding movie by ID", error);
+  }
 }
 
 // Adds the movie to watchlist atored in local storage if its not already there and provides feedback to the user
-function addMovietoWatchlist(movie) {
+function addMovieToWatchlist(movie) {
   let watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
   // Checks if the movie already exists in the watchlist
   if (!watchlist.some((m) => m.imdbID === movie.imdbID)) {
@@ -99,7 +106,7 @@ function addMovietoWatchlist(movie) {
 document.getElementById("search-form").addEventListener("submit", function (e) {
   e.preventDefault();
   //.trim() remove whitespace from both ends of a string
-  let searchTerm = document.getElementById("input-title").value.trim();
+  const searchTerm = document.getElementById("input-title").value.trim();
   if (searchTerm) {
     getMovieData(searchTerm);
   }
