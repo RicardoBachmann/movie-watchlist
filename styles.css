@@ -28,7 +28,6 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
-  border: 1px solid red;
 }
 
 .header h1 {
@@ -112,10 +111,6 @@ body {
   transition: background-color 0.3s ease;
 }
 
-.search-button:hover {
-  background-color: #da1e1e;
-}
-
 .movie-exploring {
   display: flex;
   flex-direction: column;
@@ -133,32 +128,66 @@ body {
 .movie-card {
   display: flex;
   align-items: center;
-  padding-left: 50px;
   margin-bottom: 20px;
-  border: 1px solid blue;
+  padding-bottom: 20px;
+
+  border-bottom: 1px solid #ccc;
 }
 
 .movie-card-info {
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
+  padding-left: 20px;
+}
+
+.movie-card-info p {
+  font-size: 1rem;
 }
 
 .movie-card-header {
   font-size: 1rem;
   display: flex;
-  align-items: baseline;
-  gap: 20px;
-  margin-bottom: 20px;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.movie-card-header h1 {
+  font-weight: 500;
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+
+.movie-card-header p {
+  font-size: 0.8rem;
+  font-weight: 500;
 }
 
 .movie-card-header_sub {
   display: flex;
-  gap: 50px;
-  margin-bottom: 20px;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.movie-card-header_sub p {
+  font-size: 0.8rem;
+  font-weight: 500;
 }
 
 .movie-poster img {
+  display: flex;
   width: 99px;
   height: 147px;
+  border-radius: 5px;
+}
+
+.add-to-watchlist {
+  font-size: 0.9rem;
+  padding: 5px 10px;
+  margin-top: 30px;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }

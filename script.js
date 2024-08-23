@@ -160,21 +160,23 @@ function generateMovieHtml(movies) {
       (details) => `
     <div class="movie-card">
       <div class="movie-poster">
-        <img src="${details.Poster}" alt="${details.Title} poster"/>
+         <img src="${details.Poster}" alt="${details.Title} poster"/>
+          <button class="add-to-watchlist" data-movie-id="${details.imdbID}">
+            <i class="fa-solid fa-circle-plus"></i> Watchlist 
+          </button>
       </div>
       <div class="movie-card-info">
         <div class="movie-card-header">
           <h1>${details.Title}</h1>
-          <p>&#11088; ${details.imdbRating}</p>
+          <p>IMDb Rating &#11088; ${details.imdbRating}</p>
         </div>
         <div class="movie-card-header_sub">
           <p>${details.Runtime}</p>
           <p>${details.Genre}</p>
-          <button class="add-to-watchlist" data-movie-id="${details.imdbID}">Add to Watchlist</button>
+
         </div>
         <p>${details.Plot}</p>
       </div>
-      <hr>
     </div>
   `
     )
