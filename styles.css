@@ -209,3 +209,10 @@ body {
     gap: 1rem;
   }
 }
+
+/* Styles for desktops */
+@media (min-width: 1028px) {
+  html {
+    font-size: 20px;
+  }
+}
