@@ -194,13 +194,18 @@ body {
 
 /* Styles for tablets */
 @media (min-width: 768px) {
-  body {
+  html {
     background-color: azure;
+    font-size: 18px;
   }
-  .movie-card-header h1 {
-    font-size: 1.833rem;
-    font-weight: 500;
-    line-height: 1.2;
-    margin-bottom: 0.625rem;
+  main {
+    margin: 2rem;
+    margin-top: 0rem;
+  }
+
+  .movie-card-header_sub {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1rem;
   }
 }
