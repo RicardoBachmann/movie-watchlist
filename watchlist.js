@@ -16,25 +16,27 @@ function displayWatchlist() {
   const watchlistHtml = watchlist
     // use .map() to provide a more concise approach to transform and generating HTML content from an arr
     .map(
-      (movie) => `
-              <div class="movie-card">
-        <div class="movie-poster">
-          <img src="${movie.Poster}" alt="Poster of the movie ${movie.Title}"/>
-        </div>
-        <div class="movie-card-info">
-          <div class="movie-card-header">
-            <h1>${movie.Title}</h1>
-            <p>&#11088 ${movie.imdbRating}</p>
-          </div>
-          <div class="movie-card-header_sub">
-            <p>${movie.Runtime}</p>
-            <p>${movie.Genre}</p>
-            <button data-movie-id="${movie.imdbID}">Delete from Watchlist</button>
-          </div>
-          <p>${movie.Plot}</p>
-        </div>
-        <hr>
-      </div>
+      (detailsData) => `
+        <div class="movie-card">
+                <div class="movie-poster">
+                  <img src="${detailsData.Poster}" alt="${detailsData.Title} poster"/>
+                  <button class="add-to-watchlist" data-movie-id="${detailsData.imdbID}">
+                    <i class="fa-solid fa-circle-minus"></i> Delete 
+                  </button>
+              </div>
+                <div class="movie-card-info">
+                <div class="movie-card-header">
+                    <h1>${detailsData.Title}</h1>
+                    <p>&#11088 ${detailsData.imdbRating}</p>
+                </div>
+                <div class="movie-card-header_sub">
+                    <p>${detailsData.Runtime}</p>
+                    <p>${detailsData.Genre}</p>
+                </div>
+                <p>${detailsData.Plot}</p>
+                </div>
+                <hr>
+            </div>
         `
     )
     .join("");
