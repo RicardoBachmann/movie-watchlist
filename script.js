@@ -1,7 +1,6 @@
 const API_KEY = "ff2c7e65";
 const API_URL = "http://www.omdbapi.com/";
 
-/*
 async function getMovieData(searchTerm) {
   try {
     // using encodeURIComponent to make sure that the search term is correctly formatted for the API request
@@ -30,8 +29,11 @@ async function getMovieData(searchTerm) {
           (detailsData) => `
             <div class="movie-card">
                 <div class="movie-poster">
-                    <img src="${detailsData.Poster}" alt="Poster of the movie ${detailsData.Title}"/>
-                </div>
+                  <img src="${detailsData.Poster}" alt="${detailsData.Title} poster"/>
+                  <button class="add-to-watchlist" data-movie-id="${detailsData.imdbID}">
+                    <i class="fa-solid fa-circle-plus"></i> Watchlist 
+                  </button>
+              </div>
                 <div class="movie-card-info">
                 <div class="movie-card-header">
                     <h1>${detailsData.Title}</h1>
@@ -40,7 +42,6 @@ async function getMovieData(searchTerm) {
                 <div class="movie-card-header_sub">
                     <p>${detailsData.Runtime}</p>
                     <p>${detailsData.Genre}</p>
-                    <button class="add-to-watchlist" data-movie-id="${detailsData.imdbID}">Add to Watchlist</button>
                 </div>
                 <p>${detailsData.Plot}</p>
                 </div>
@@ -111,101 +112,4 @@ document.getElementById("search-form").addEventListener("submit", function (e) {
   if (searchTerm) {
     getMovieData(searchTerm);
   }
-});
-*/
-
-// Function to get movie data from the API
-async function getMovieData(searchTerm) {
-  try {
-    const response = await fetch(
-      `${API_URL}?s=${encodeURIComponent(searchTerm)}&apikey=${API_KEY}`
-    );
-    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
-    const data = await response.json();
-    let movieHtml = "";
-
-    if (data.Response === "True") {
-      const movies = await Promise.all(
-        data.Search.map(async (movie) => {
-          const detailsResponse = await fetch(
-            `${API_URL}?i=${movie.imdbID}&apikey=${API_KEY}`
-          );
-          return detailsResponse.json();
-        })
-      );
-
-      // Store the movies in localStorage
-      localStorage.setItem("movies", JSON.stringify(movies));
-
-      movieHtml = generateMovieHtml(movies);
-    } else {
-      movieHtml = `<p>No movies found for "${searchTerm}".</p>`;
-    }
-
-    document.getElementById("movie-container").innerHTML = movieHtml;
-    attachEventListeners();
-  } catch (error) {
-    console.error("Error fetching movie data:", error);
-    document.getElementById(
-      "movie-container"
-    ).innerHTML = `<p>Error fetching movie data.</p>`;
-  }
-}
-
-// Function to generate the HTML for movies
-function generateMovieHtml(movies) {
-  return movies
-    .map(
-      (details) => `
-    <div class="movie-card">
-      <div class="movie-poster">
-         <img src="${details.Poster}" alt="${details.Title} poster"/>
-          <button class="add-to-watchlist" data-movie-id="${details.imdbID}">
-            <i class="fa-solid fa-circle-plus"></i> Watchlist 
-          </button>
-      </div>
-      <div class="movie-card-info">
-        <div class="movie-card-header">
-          <h1>${details.Title}</h1>
-          <p>IMDb Rating &#11088; ${details.imdbRating}</p>
-        </div>
-        <div class="movie-card-header_sub">
-          <p>${details.Runtime}</p>
-          <p>${details.Genre}</p>
-
-        </div>
-        <p>${details.Plot}</p>
-      </div>
-    </div>
-  `
-    )
-    .join("");
-}
-
-// Function to attach event listeners to buttons
-function attachEventListeners() {
-  document
-    .querySelectorAll(".add-to-watchlist")
-    .forEach((button) =>
-      button.addEventListener("click", handleAddToWatchlist)
-    );
-}
-
-// Load movies from localStorage on page load
-document.addEventListener("DOMContentLoaded", () => {
-  const storedMovies = localStorage.getItem("movies");
-  if (storedMovies) {
-    const movies = JSON.parse(storedMovies);
-    const movieHtml = generateMovieHtml(movies);
-    document.getElementById("movie-container").innerHTML = movieHtml;
-    attachEventListeners();
-  }
-});
-
-// Event listener for form submission
-document.getElementById("search-form").addEventListener("submit", function (e) {
-  e.preventDefault();
-  const searchTerm = document.getElementById("input-title").value.trim();
-  if (searchTerm) getMovieData(searchTerm);
 });

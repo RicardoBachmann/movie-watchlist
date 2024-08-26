@@ -180,6 +180,7 @@ body {
 }
 
 .add-to-watchlist {
+  width: 100%;
   font-size: 0.9rem;
   padding: 0.313rem 0.625rem;
   border-radius: 0.313rem;
@@ -188,6 +189,7 @@ body {
   border: none;
   cursor: pointer;
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 0.313rem;
 }
@@ -195,7 +197,6 @@ body {
 /* Styles for tablets */
 @media (min-width: 768px) {
   html {
-    background-color: azure;
     font-size: 18px;
   }
   main {
